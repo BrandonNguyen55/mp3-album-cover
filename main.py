@@ -2,6 +2,7 @@
 # Library Imports
 import string
 import os
+import pathlib
 import eyed3
 
 # Global variables
@@ -14,9 +15,19 @@ ROCK_DIR =  os.path.join(CWD, "..", "test", "music", "Rock")
 #===========================================================================================
 # Functions
 #===========================================================================================
+""" Split the filename into artist and song name
+        @param filename - The filename of the mp3 file
+        @ return - a tuple of strings for the artist and song name
+"""
 def splitFileName(filename:string)-> (string, string): 
+    # If filename doesn't have the "{artist} - {song} format return early
     if filename.count('-') != 1:
         return None, None 
+
+    # Stem off the file extension
+    filename = pathlib.Path(filename).stem
+
+    # Split the file into artist and song
     artistName, songName = filename.split('-')
     artistName = artistName.strip()
     songName = songName.strip()
@@ -25,8 +36,6 @@ def splitFileName(filename:string)-> (string, string):
 
 
    
-
-
 """ Prints the Audio Metadata given an AudioFile
         @param audio - an AudioFile with the metadata      
 """
