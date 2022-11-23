@@ -24,6 +24,36 @@ def splitFileName(filename:string)-> (string, string):
 
 
 
+""" Prints the Audio Metadata given an filename
+        @param audio - an filename of the audio      
+"""
+def printAudioMetaData(audio:string)-> None:
+    audio = eyed3.load(os.path.join(TEST_DIR, "Rock", "Eric Johnson - Cliffs Of Dover.mp3"))
+
+    print(f"Title: {audio.tag.title}")
+    print(f"Artist: {audio.tag.artist}")
+    print(f"Album: {audio.tag.album}")
+    print(f"Album Artist: {audio.tag.album_artist}")
+    print(f"Composer: {audio.tag.composer}")
+    print(f"Publisher: {audio.tag.publisher}")
+    print(f"Genre: {audio.tag.genre}")
+
+
+
+
+""" Prints the Audio Metadata given an AudioFile
+        @param audio - an AudioFile with the metadata      
+"""
+def printAudioMetaData(audio:eyed3.AudioFile)-> None:
+    print(f"Title: {audio.tag.title}")
+    print(f"Artist: {audio.tag.artist}")
+    print(f"Album: {audio.tag.album}")
+    print(f"Album Artist: {audio.tag.album_artist}")
+    print(f"Composer: {audio.tag.composer}")
+    print(f"Publisher: {audio.tag.publisher}")
+    print(f"Genre: {audio.tag.genre}")
+
+
 
 
 #===========================================================================================
@@ -37,16 +67,10 @@ def main():
         print(f"{artistName} : {songName}")
 
     
-    
+    print()
+    print() 
     audio = eyed3.load(os.path.join(TEST_DIR, "Rock", "Eric Johnson - Cliffs Of Dover.mp3"))
-
-    print(f"Title: {audio.tag.title}")
-    print(f"Artist: {audio.tag.artist}")
-    print(f"Album: {audio.tag.album}")
-    print(f"Album Artist: {audio.tag.album_artist}")
-    print(f"Composer: {audio.tag.composer}")
-    print(f"Publisher: {audio.tag.publisher}")
-    print(f"Genre: {audio.tag.genre}")
+    printAudioMetaData(audio)
 
     return 0
 
