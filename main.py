@@ -14,7 +14,13 @@ ROCK_DIR =  os.path.join(CWD, "..", "test", "music", "Rock")
 #===========================================================================================
 # Functions
 #===========================================================================================
- 
+def splitFileName(filename:string)-> (string, string): 
+    if filename.count('-') != 1:
+        return None, None 
+    artistName, songName = filename.split('-')
+    artistName = artistName.strip()
+    songName = songName.strip()
+    return artistName, songName 
 
 
 
@@ -25,7 +31,11 @@ ROCK_DIR =  os.path.join(CWD, "..", "test", "music", "Rock")
 #===========================================================================================
 def main():
     for audioFile in os.listdir(ROCK_DIR):
-        print(f"File: {audioFile}")
+        artistName, songName = splitFileName(audioFile) 
+        if artistName == None:
+            continue
+        print(f"{artistName} : {songName}")
+
     
     
     audio = eyed3.load(os.path.join(TEST_DIR, "Rock", "Eric Johnson - Cliffs Of Dover.mp3"))
