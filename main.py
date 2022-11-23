@@ -42,15 +42,6 @@ def printAudioMetaData(audio:eyed3.AudioFile)-> None:
 
 
 
-""" Prints the Audio Metadata given an filename
-        @param audio - an filename of the audio      
-"""
-def printAudioMetaData(audio:string)-> None:
-    audio = eyed3.load(os.path.join(TEST_DIR, "Rock", "Eric Johnson - Cliffs Of Dover.mp3"))
-    printAudioMetaData(audio)
- 
-
-
 #===========================================================================================
 # Main Function
 #===========================================================================================
