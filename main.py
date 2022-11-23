@@ -7,10 +7,27 @@ import eyed3
 # Global variables
 CWD = os.getcwd()
 TEST_DIR = os.path.join(CWD, "..", "test", "music")
+ROCK_DIR =  os.path.join(CWD, "..", "test", "music", "Rock")
+
+
+
 #===========================================================================================
-#Main Function
+# Functions
+#===========================================================================================
+ 
+
+
+
+
+
+#===========================================================================================
+# Main Function
 #===========================================================================================
 def main():
+    for audioFile in os.listdir(ROCK_DIR):
+        print(f"File: {audioFile}")
+    
+    
     audio = eyed3.load(os.path.join(TEST_DIR, "Rock", "Eric Johnson - Cliffs Of Dover.mp3"))
 
     print(f"Title: {audio.tag.title}")
