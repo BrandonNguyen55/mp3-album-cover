@@ -4,22 +4,23 @@ import string
 import os
 import pathlib
 import eyed3
+import requests
+from bs4 import BeautifulSoup
 
 # Global variables
 CWD = os.getcwd()
 TEST_DIR = os.path.join(CWD, "..", "test", "music")
-ROCK_DIR =  os.path.join(CWD, "..", "test", "music", "Rock")
-
-
-
+ROCK_DIR = os.path.join(TEST_DIR, "Rock")
+TEST_DATA_DIR = os.path.join(TEST_DIR, "TestData")
+  
 #===========================================================================================
 # Functions
 #===========================================================================================
 """ Split the filename into artist and song name
         @param filename - The filename of the mp3 file
-        @ return - a tuple of strings for the artist and song name
+        @return - a tuple of strings for the artist and song name
 """
-def splitFileName(filename:string)-> (string, string): 
+def splitFileName(filename:string): 
     # If filename doesn't have the "{artist} - {song} format return early
     if filename.count('-') != 1:
         return None, None 
@@ -55,17 +56,38 @@ def printAudioMetaData(audio:eyed3.AudioFile)-> None:
 # Main Function
 #===========================================================================================
 def main():
-    for audioFile in os.listdir(ROCK_DIR):
-        artistName, songName = splitFileName(audioFile) 
-        if artistName == None:
-            continue
-        print(f"{artistName} : {songName}")
+    filenameDump = []
+
+    # for audioFile in os.listdir(ROCK_DIR):
+    #     artistName, songName = splitFileName(audioFile) 
+    #     if artistName == None:
+    #         filenameDump.append(audioFile)
+    #         continue
+    #     print(f"{artistName} : {songName}")
+
+    # print("\n\nFiles that didn't fit:")
+    # for audioFile in filenameDump:
+    #     print(f"\t{audioFile}")
+    
+    # print()
+    # print() 
+    # print("Example of using the eyed3 library to get the metadata I currently have on Eric Johnson's Cliffs Of Dover")
+    # audio = eyed3.load(os.path.join(TEST_DIR, "Rock", "Eric Johnson - Cliffs Of Dover.mp3"))
+    # printAudioMetaData(audio)
 
     
-    print()
-    print() 
-    audio = eyed3.load(os.path.join(TEST_DIR, "Rock", "Eric Johnson - Cliffs Of Dover.mp3"))
-    printAudioMetaData(audio)
+    # Now to edit the audio
+    for audioFileName in os.listdir(TEST_DATA_DIR):
+        artistName, songTitle = splitFileName(audioFileName) 
+        if artistName == None:
+            filenameDump.append(audioFileName)
+            continue
+
+        audioFile = eyed3.load(os.path.join(TEST_DATA_DIR, audioFileName))
+        audioFile.tag.artist = artistName 
+        audioFile.tag.title = songTitle 
+
+        audioFile.tag.save()
 
     return 0
 
