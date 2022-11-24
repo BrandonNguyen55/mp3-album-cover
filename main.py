@@ -17,7 +17,7 @@ TEST_DATA_DIR = os.path.join(TEST_DIR, "TestData")
 # Functions
 #===========================================================================================
 """ Split the filename into artist and song name
-        @param filename - The filename of the mp3 file
+        @param filename - the filename of the mp3 file
         @return - a tuple of strings for the artist and song name
 """
 def splitFileName(filename:string): 
@@ -49,6 +49,19 @@ def printAudioMetaData(audio:eyed3.AudioFile)-> None:
     print(f"Publisher: {audio.tag.publisher}")
     print(f"Genre: {audio.tag.genre}")
 
+
+""" Edit the Artist and Title Metadata of the AudioFile
+        @param audio - an AudioFile with the metadata      
+        @param artistName - the name of the artist
+        @param songTitle - the title of the song       
+"""
+def editAudioArtistTitle(audioFile:eyed3.AudioFile, artistName:string, songTitle:string)-> None:
+    # Edit the metadata
+    audioFile.tag.artist = artistName 
+    audioFile.tag.title = songTitle 
+
+    # Save the AudioFile
+    audioFile.tag.save()
 
 
 
@@ -84,11 +97,8 @@ def main():
             continue
 
         audioFile = eyed3.load(os.path.join(TEST_DATA_DIR, audioFileName))
-        audioFile.tag.artist = artistName 
-        audioFile.tag.title = songTitle 
-
-        audioFile.tag.save()
-
+        editAudioArtistTitle(audioFile, artistName, songTitle)
+    
     return 0
 
 
