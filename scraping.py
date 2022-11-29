@@ -6,27 +6,11 @@ import pathlib
 import eyed3
 import requests
 from bs4 import BeautifulSoup
-
-# Global variables
-CWD = os.getcwd()
-TEST_DIR = os.path.join(CWD, "..", "test", "music")
-ROCK_DIR = os.path.join(TEST_DIR, "Rock")
-TEST_DATA_DIR = os.path.join(TEST_DIR, "TestData")
+from utils import *
 
 #===========================================================================================
 # Functions
 #===========================================================================================
-""" Get the Website HTML From the url
-        @param url - The url link of the website
-        @return - The htmlText and status
-"""
-def getWebsiteHTML(url):
-    # Make a request to genius
-    res = requests.get(url)
-    htmlText = res.text
-    status = res.status_code
-    return htmlText, status
-
 """ Scrape the artist and song from the HTML
         @param htmlText - The HTML of the Website
         @return - The artist and song title 
@@ -49,28 +33,34 @@ def scrapeWikipedia(htmlText):
     htmlBSoup = BeautifulSoup(htmlText, "html.parser")
     htmlBSoup = BeautifulSoup(htmlBSoup.prettify(), "html.parser")
 
+    # Get the table vevant
+    tableVevant = htmlBSoup.find("table", class_="infobox vevent")
+
     # Get the Song Title
-    songTag = htmlBSoup.find("th", class_="infobox-above summary")
+    songTag = tableVevant.find("th", class_="infobox-above summary")
     songStr = songTag.string
+
     # Strip the whitespace and remove beginning and end quotes
     songTitle = songStr.strip()[1:-1]
 
-    table = htmlBSoup.find("table")
+    return htmlBSoup, tableVevant, songTitle
 
 
 
-    return htmlBSoup, table, songTitle
 
-
-
+#===========================================================================================
+# Main
+#===========================================================================================
 
 # url = "https://genius.com/Saosin-i-never-wanted-to-lyrics"
 url = "https://en.wikipedia.org/wiki/Ruby_(Kaiser_Chiefs_song)"
+# url = "https://en.wikipedia.org/wiki/Cliffs_of_Dover_(composition)"
+# url = "https://open.spotify.com/track/0VhhaYztcRWc7PEjJCjr1g"
 htmlText, status = getWebsiteHTML(url)
 
-html, table, song = scrapeWikipedia(htmlText)
+# html, table, song = scrapeWikipedia(htmlText)
 
+htmlBSoup = BeautifulSoup(htmlText, "html.parser")
+htmlBSoup = BeautifulSoup(htmlBSoup.prettify(), "html.parser")
 
-# with open(os.path.join(CWD, 'temp', 'outputWiki.html'), 'w', encoding = 'utf-8') as f:
-    # f.write(str(htmlBSoup))
     

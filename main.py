@@ -4,14 +4,8 @@ import string
 import os
 import pathlib
 import eyed3
-import requests
 from bs4 import BeautifulSoup
-
-# Global variables
-CWD = os.getcwd()
-TEST_DIR = os.path.join(CWD, "..", "test", "music")
-ROCK_DIR = os.path.join(TEST_DIR, "Rock")
-TEST_DATA_DIR = os.path.join(TEST_DIR, "TestData")
+from utils import *
   
 #===========================================================================================
 # Functions
