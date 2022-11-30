@@ -4,8 +4,11 @@ import string
 import os
 import pathlib
 import eyed3
+from eyed3.id3.frames import ImageFrame
 from bs4 import BeautifulSoup
 from utils import *
+from scraping import *
+import urllib.request
   
 #===========================================================================================
 # Functions
@@ -46,17 +49,44 @@ def printAudioMetaData(audio:eyed3.AudioFile)-> None:
 
 """ Edit the Artist and Title Metadata of the AudioFile
         @param audio - an AudioFile with the metadata      
-        @param artistName - the name of the artist
+        @param artist - the name of the artist
         @param songTitle - the title of the song       
 """
-def editAudioArtistTitle(audioFile:eyed3.AudioFile, artistName:string, songTitle:string)-> None:
+def editAudio(audioFile:eyed3.AudioFile, artist:string, songTitle:string, album:string)-> None:
     # Edit the metadata
-    audioFile.tag.artist = artistName 
+    audioFile.tag.artist = artist 
     audioFile.tag.title = songTitle 
+    audioFile.tag.album = album 
 
     # Save the AudioFile
     audioFile.tag.save()
 
+def addAlbumArt(audioFile:eyed3.AudioFile, artUrl:string):
+    # binData = saveJPG(artUrl, "art_cover")
+    response = urllib.request.urlopen(artUrl)
+    imageData = response.read()
+    audioFile.tag.images.set(ImageFrame.FRONT_COVER, imageData, u"cover")
+    audioFile.tag.save()
+
+
+def processFile(audioFileName):
+    name1, name2 = splitFileName(audioFileName) 
+
+    # Search on Google
+    searchQuery = google(f"{name1} {name2}")
+    # TODO: Pick wikipedia site
+    url = searchQuery[3]
+
+    # Make an instance of the Website to scrape     
+    htmlText, status = getWebsiteHTML(url)
+    website = Wikipedia(htmlText)
+
+    # Save the new info to the audioFile 
+    audioFile = eyed3.load(os.path.join(TEST_DATA_DIR, audioFileName))
+    audioFile.initTag(version=(2, 3, 0))  
+
+    editAudio(audioFile, website.getArtist(), website.getSongTitle(), website.getAlbum())
+    addAlbumArt(audioFile, website.getAlbumArtUrl())
 
 
 #===========================================================================================
@@ -64,24 +94,6 @@ def editAudioArtistTitle(audioFile:eyed3.AudioFile, artistName:string, songTitle
 #===========================================================================================
 def main():
     filenameDump = []
-
-    # for audioFile in os.listdir(ROCK_DIR):
-    #     artistName, songName = splitFileName(audioFile) 
-    #     if artistName == None:
-    #         filenameDump.append(audioFile)
-    #         continue
-    #     print(f"{artistName} : {songName}")
-
-    # print("\n\nFiles that didn't fit:")
-    # for audioFile in filenameDump:
-    #     print(f"\t{audioFile}")
-    
-    # print()
-    # print() 
-    # print("Example of using the eyed3 library to get the metadata I currently have on Eric Johnson's Cliffs Of Dover")
-    # audio = eyed3.load(os.path.join(TEST_DIR, "Rock", "Eric Johnson - Cliffs Of Dover.mp3"))
-    # printAudioMetaData(audio)
-
     
     # Now to edit the audio
     for audioFileName in os.listdir(TEST_DATA_DIR):
@@ -90,8 +102,7 @@ def main():
             filenameDump.append(audioFileName)
             continue
 
-        audioFile = eyed3.load(os.path.join(TEST_DATA_DIR, audioFileName))
-        editAudioArtistTitle(audioFile, artistName, songTitle)
+        processFile(audioFileName)
     
     return 0
 
