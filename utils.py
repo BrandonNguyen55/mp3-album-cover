@@ -42,3 +42,26 @@ def google(query, num=10):
 def saveHTML(filename, html):
     with open(os.path.join(CWD, 'temp', f'{filename}.html'), 'w', encoding = 'utf-8') as f:
         f.write(str(html))
+
+
+""" Save the jpeg file from a url link
+        @param url - The url link
+"""
+def saveJPG(url, filename):
+    
+    with open(os.path.join(CWD, 'temp', f'{filename}.jpg'), 'wb') as f:
+        response = requests.get(url, stream=True)
+
+        if not response.ok:
+            print(response)
+
+        for block in response.iter_content(1024):
+            if not block:
+                break
+
+            f.write(block)
+
+    return open(os.path.join(CWD, 'temp', f'{filename}.jpg'), 'rb').read() 
+
+
+
