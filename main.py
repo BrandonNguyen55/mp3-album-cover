@@ -13,11 +13,13 @@ import urllib.request
 #===========================================================================================
 # Functions
 #===========================================================================================
-""" Split the filename into artist and song name
-        @param filename - the filename of the mp3 file
-        @return - a tuple of strings for the artist and song name
-"""
-def split_file_name(filename:string): 
+def split_filename(filename:string): 
+    """ 
+    Split the filename into artist and song name.
+            
+    @param filename - the filename of the mp3 file
+    @return - a tuple of strings for the artist and song name
+    """ 
     # If filename doesn't have the "{artist} - {song} format return early
     if filename.count('-') != 1:
         return None, None 
@@ -31,10 +33,13 @@ def split_file_name(filename:string):
     song_name = song_name.strip()
     return artist_name, song_name 
 
-""" Prints the Audio Metadata given an AudioFile
-        @param audio - an AudioFile with the metadata      
-"""
-def print_audio_meta_data(audio:eyed3.AudioFile)-> None:
+
+def print_audio_metadata(audio:eyed3.AudioFile)-> None:
+    """ 
+    Prints the Audio Metadata given an AudioFile.
+            
+    @param audio - an AudioFile with the metadata      
+    """    
     print(f"Title: {audio.tag.title}")
     print(f"Artist: {audio.tag.artist}")
     print(f"Album: {audio.tag.album}")
@@ -44,12 +49,14 @@ def print_audio_meta_data(audio:eyed3.AudioFile)-> None:
     print(f"Genre: {audio.tag.genre}")
 
 
-""" Edit the Artist and Title Metadata of the AudioFile
-        @param audio_file - an AudioFile with the metadata      
-        @param artist - the name of the artist
-        @param song_title - the title of the song       
-"""
 def edit_audio(audio_file:eyed3.AudioFile, artist:string, song_title:string, album:string)-> None:
+    """ 
+    Edit the Artist and Title Metadata of the AudioFile.
+
+    @param audio_file - an AudioFile with the metadata      
+    @param artist - the name of the artist
+    @param song_title - the title of the song       
+    """
     # Edit the metadata
     audio_file.tag.artist = artist 
     audio_file.tag.title = song_title 
@@ -58,7 +65,14 @@ def edit_audio(audio_file:eyed3.AudioFile, artist:string, song_title:string, alb
     # Save the AudioFile
     audio_file.tag.save()
 
+
 def add_album_art(audio_file:eyed3.AudioFile, art_url:string):
+    """
+    Add album art to the AudioFile.
+
+    @param audio_file - an AudioFile with the metadata      
+    @param art_url - the url of the album art
+    """
     response = urllib.request.urlopen(art_url)
     image_data = response.read()
     audio_file.tag.images.set(ImageFrame.FRONT_COVER, image_data, u"cover")
@@ -66,7 +80,12 @@ def add_album_art(audio_file:eyed3.AudioFile, art_url:string):
 
 
 def process_file(audio_filename):
-    name1, name2 = split_file_name(audio_filename) 
+    """
+    Process the audio filename, giving it the metadata and album art.
+
+    @param audio_filename - the filename of the mp3 audio file
+    """
+    name1, name2 = split_filename(audio_filename) 
 
     # Search on Google
     search_query = google(f"{name1} {name2}")
@@ -88,23 +107,21 @@ def process_file(audio_filename):
 #===========================================================================================
 # Main Function
 #===========================================================================================
-def main():
+if __name__ == "__main__":
     filenameDump = []
     
     # Now to edit the audio
     for audio_filename in os.listdir(TEST_DATA_DIR):
-        artist_name, song_title = split_file_name(audio_filename) 
+        artist_name, song_title = split_filename(audio_filename) 
         if artist_name == None:
             filenameDump.append(audio_filename)
             continue
 
         process_file(audio_filename)
     
-    return 0
 
 # url = "https://genius.com/Saosin-i-never-wanted-to-lyrics"
 # url = "https://en.wikipedia.org/wiki/Ruby_(Kaiser_Chiefs_song)"
 # url = "https://en.wikipedia.org/wiki/Cliffs_of_Dover_(composition)"
 # url = "https://open.spotify.com/track/0VhhaYztcRWc7PEjJCjr1g"
 # url = "https://en.wikipedia.org/wiki/The_Ghost_of_You"
-main()

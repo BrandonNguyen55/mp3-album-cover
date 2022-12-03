@@ -15,40 +15,47 @@ TEST_DATA_DIR = os.path.join(TEST_DIR, "TestData")
 #===========================================================================================
 # Functions
 #===========================================================================================
-""" Get the Website HTML From the url
-        @param url - The url link of the website
-        @return - The htmlText and status
-"""
 def get_website_html(url):
+    """ 
+    Get the Website HTML From the url.
+    
+    @param url - The url link of the website
+    @return - The htmlText and status
+    """
     # Make a request to genius
     res = requests.get(url)
     html_text = res.text
     status = res.status_code
     return html_text, status
     
-""" Search up Google and return a list of urls
-        @param query - The search quere
-        @param num - The num of urls to return
-        @return - A list of urls
-"""
 def google(query, num=10):
+    """ 
+    Search up Google and return a list of urls.
+   
+    @param query - The search quere
+    @param num - The num of urls to return
+    @return - A list of urls
+    """
     return [i for i in search(query, tld="co.in", num=num, stop=10, pause=2)]
 
 
-""" Save the html file
-        @param filename - The name of the html file
-        @param html - The HTML 
-"""
 def save_html(filename, html):
+    """ 
+    Save the html file.
+        
+    @param filename - The name of the html file
+    @param html - The HTML 
+    """
     with open(os.path.join(CWD, 'temp', f'{filename}.html'), 'w', encoding = 'utf-8') as f:
         f.write(str(html))
 
 
-""" Save the jpeg file from a url link
-        @param url - The url link
-"""
 def save_jpg(url, filename):
-    
+    """ 
+    Save the jpeg file from a url link.
+   
+    @param url - The url link
+    """
     with open(os.path.join(CWD, 'temp', f'{filename}.jpg'), 'wb') as f:
         response = requests.get(url, stream=True)
 
