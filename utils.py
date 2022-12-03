@@ -19,12 +19,12 @@ TEST_DATA_DIR = os.path.join(TEST_DIR, "TestData")
         @param url - The url link of the website
         @return - The htmlText and status
 """
-def getWebsiteHTML(url):
+def get_website_html(url):
     # Make a request to genius
     res = requests.get(url)
-    htmlText = res.text
+    html_text = res.text
     status = res.status_code
-    return htmlText, status
+    return html_text, status
     
 """ Search up Google and return a list of urls
         @param query - The search quere
@@ -39,7 +39,7 @@ def google(query, num=10):
         @param filename - The name of the html file
         @param html - The HTML 
 """
-def saveHTML(filename, html):
+def save_html(filename, html):
     with open(os.path.join(CWD, 'temp', f'{filename}.html'), 'w', encoding = 'utf-8') as f:
         f.write(str(html))
 
@@ -47,7 +47,7 @@ def saveHTML(filename, html):
 """ Save the jpeg file from a url link
         @param url - The url link
 """
-def saveJPG(url, filename):
+def save_jpg(url, filename):
     
     with open(os.path.join(CWD, 'temp', f'{filename}.jpg'), 'wb') as f:
         response = requests.get(url, stream=True)
