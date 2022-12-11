@@ -88,13 +88,13 @@ def process_file(audio_filename):
     name1, name2 = split_filename(audio_filename) 
 
     # Search on Google
-    search_query = google(f"{name1} {name2}")
+    search_query = google(f"Spotify {name1} {name2}")
     # TODO: Pick wikipedia site
-    url = search_query[3]
+    url = search_query[0]
 
     # Make an instance of the Website to scrape     
     html_text, status = get_website_html(url)
-    website = Wikipedia(html_text)
+    website = Spotify(html_text)
 
     # Save the new info to the audio_file 
     audio_file = eyed3.load(os.path.join(TEST_DATA_DIR, audio_filename))
@@ -113,15 +113,12 @@ if __name__ == "__main__":
     # Now to edit the audio
     for audio_filename in os.listdir(TEST_DATA_DIR):
         artist_name, song_title = split_filename(audio_filename) 
+        print(f"{artist_name} -- {song_title}")
         if artist_name == None:
             filenameDump.append(audio_filename)
             continue
+        try: 
+            process_file(audio_filename)
+        except:
+            filenameDump.append(audio_filename)
 
-        process_file(audio_filename)
-    
-
-# url = "https://genius.com/Saosin-i-never-wanted-to-lyrics"
-# url = "https://en.wikipedia.org/wiki/Ruby_(Kaiser_Chiefs_song)"
-# url = "https://en.wikipedia.org/wiki/Cliffs_of_Dover_(composition)"
-# url = "https://open.spotify.com/track/0VhhaYztcRWc7PEjJCjr1g"
-# url = "https://en.wikipedia.org/wiki/The_Ghost_of_You"
