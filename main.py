@@ -20,7 +20,7 @@ def split_filename(filename:string):
     @param filename - the filename of the mp3 file
     @return - a tuple of strings for the artist and song name
     """ 
-    # If filename doesn't have the "{artist} - {song} format return early
+    # If filename doesn't have the "{artist} - {song}" format return early
     if filename.count('-') != 1:
         return None, None 
 
@@ -88,7 +88,7 @@ def process_file(audio_filename):
     name1, name2 = split_filename(audio_filename) 
 
     # Search on Google
-    search_query = google(f"Spotify {name1} {name2}")
+    search_query = google(f"Spotify {name1} {name2} song")
     # TODO: Pick wikipedia site
     url = search_query[0]
 
