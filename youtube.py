@@ -28,6 +28,10 @@ def my_hook(d):
         print('Done downloading, now post-processing ...')
 
 
+
+
+
+
 ydl_opts = {
     'logger': MyLogger(),
     'progress_hooks': [my_hook],
@@ -35,11 +39,8 @@ ydl_opts = {
     # See help(yt_dlp.postprocessor) for a list of available Postprocessors and their arguments
     'postprocessors': [{'key': 'FFmpegExtractAudio',
                         'preferredcodec': 'm4a',
-                       }]
-}
+                    }]
+}    
 
-
-
-def download_youtube(urls):
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download(urls)
+with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+    ydl.download(URLS)

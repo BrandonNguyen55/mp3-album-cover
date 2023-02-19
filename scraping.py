@@ -64,21 +64,22 @@ class Wikipedia(Website):
 
 class Spotify(Website):
     def __init__(self, html):
+        print("Spotify")
         super().__init__(html)
         self.domain = "https://open.spotify.com/"
 
     def get_artist(self):
-        artist_info_tag = self.html_soup.find("div", class_="rS_2dJG9pgqS2A2BZ5rZ")
-        artist_tag = artist_info_tag.find("div") 
+        print("Getting Artist")
+        artist_tag = self.html_soup.find("a", href=re.compile("/artist")) 
         return artist_tag.text.strip()
 
     def get_song_title(self):
-        song_tag = self.html_soup.find("span", class_="JmV8FMNND0hJM4fCS9E4")
+        song_tag = self.html_soup.find("h1", class_="Type__TypeElement-sc-goli3j-0 ilmalU gj6rSoF7K4FohS2DJDEm")
         return song_tag.text.strip()
 
     def get_album(self):
-        album_info_tag = self.html_soup.find("div", class_="TS85Qkpioa31wR0p4kzT")
-        album_tag = album_info_tag.find("div", class_=re.compile("TypeElement"))
+        album_info_tag = self.html_soup.find("a", href=re.compile("/album"))
+        album_tag = album_info_tag.find("span")
         return album_tag.text.strip()
 
     def get_album_art_url(self):
@@ -89,7 +90,8 @@ class Spotify(Website):
 
 if __name__ == "__main__":
     # Testing Code
-    url = "https://open.spotify.com/track/1fulFeOm8Zm5QJDSLRpoCc" 
+    # url = "https://open.spotify.com/track/1fulFeOm8Zm5QJDSLRpoCc" 
+    url = "https://open.spotify.com/track/0hjOQVfGYP2NXINPOp4EgI" 
     # url = "https://open.spotify.com/track/429IbFR4yp2J81CeTwF5iY"
     # Make an instance of the Website to scrape     
     html_text, status = get_website_html(url)
