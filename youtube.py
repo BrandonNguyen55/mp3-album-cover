@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import yt_dlp
 
-URLS = ['https://www.youtube.com/watch?v=6nNEGElRfwY']
+URLS = ['https://www.youtube.com/watch?v=NX3YmSJSNyc']
 
 class MyLogger:
     def debug(self, msg):
@@ -28,19 +28,19 @@ def my_hook(d):
         print('Done downloading, now post-processing ...')
 
 
+def download_m4a(urls):
+    ydl_opts = {
+        'logger': MyLogger(),
+        'progress_hooks': [my_hook],
+        'format': 'm4a/bestaudio/best',
+        # See help(yt_dlp.postprocessor) for a list of available Postprocessors and their arguments
+        'postprocessors': [{'key': 'FFmpegExtractAudio',
+                            'preferredcodec': 'm4a',
+                        }]
+    }    
 
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download(urls)
 
-
-
-ydl_opts = {
-    'logger': MyLogger(),
-    'progress_hooks': [my_hook],
-    'format': 'm4a/bestaudio/best',
-    # See help(yt_dlp.postprocessor) for a list of available Postprocessors and their arguments
-    'postprocessors': [{'key': 'FFmpegExtractAudio',
-                        'preferredcodec': 'm4a',
-                    }]
-}    
-
-with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-    ydl.download(URLS)
+if __name__ == "__main__":
+    download_m4a(URLS)
