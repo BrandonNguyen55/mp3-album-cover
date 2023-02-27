@@ -112,18 +112,21 @@ if __name__ == "__main__":
     file_fail = []
     process_fail = []
     
-    # Now to edit the audio
     for audio_filename in os.listdir(TEST_DATA_DIR):
+        # Split File name to get Artist and Song Title
         artist_name, song_title = split_filename(audio_filename) 
         print(f"{artist_name} -- {song_title}")
         if artist_name == None:
             file_fail.append(audio_filename)
             continue
+        
+        # Attempt to process Audio File
         try: 
             process_file(audio_filename)
         except:
             process_fail.append(audio_filename)
 
+    # Print Failures
     print("\n\nSongs that Failed File Split:")
     for i in file_fail:
         print(f" {i}") 
