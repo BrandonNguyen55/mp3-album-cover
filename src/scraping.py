@@ -9,8 +9,6 @@ import re
 from bs4 import BeautifulSoup
 from utils import *
 
-
-
 #===========================================================================================
 # Functions
 #===========================================================================================
@@ -52,7 +50,7 @@ class Wikipedia(Website):
         return song_str.strip()[1:-1]
 
     def get_album(self):
-        album_tag = self.table_vevant.find(text = re.compile('from the album\n')).parent   
+        album_tag = self.table_vevant.find(text = re.compile('from the album\n'(()))).parent   
         album_tag_list = [i.text.strip() for i in album_tag.children] 
         return album_tag_list[1]
 
@@ -90,9 +88,7 @@ class Spotify(Website):
 
 if __name__ == "__main__":
     # Testing Code
-    # url = "https://open.spotify.com/track/1fulFeOm8Zm5QJDSLRpoCc" 
     url = "https://open.spotify.com/track/0hjOQVfGYP2NXINPOp4EgI" 
-    # url = "https://open.spotify.com/track/429IbFR4yp2J81CeTwF5iY"
     # Make an instance of the Website to scrape     
     html_text, status = get_website_html(url)
     

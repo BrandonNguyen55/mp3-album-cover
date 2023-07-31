@@ -13,7 +13,7 @@ import urllib.request
 #===========================================================================================
 # Functions
 #===========================================================================================
-def split_filename(filename:string): 
+def split_filename(filename:string):
     """ 
     Split the filename into artist and song name.
             
