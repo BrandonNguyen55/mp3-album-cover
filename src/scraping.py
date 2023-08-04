@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # Library Imports
-import string
 import os
 import pathlib
+import re
+import string
+
 import eyed3
 import requests
-import re
 from bs4 import BeautifulSoup
+
 from utils import *
+
 
 #===========================================================================================
 # Functions

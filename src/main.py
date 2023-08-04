@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 # Library Imports
-import string
 import os
 import pathlib
-import eyed3
-from eyed3.id3.frames import ImageFrame
-from bs4 import BeautifulSoup
-from utils import *
-from scraping import *
+import string
 import urllib.request
-  
+
+import eyed3
+from bs4 import BeautifulSoup
+from eyed3.id3.frames import ImageFrame
+
+from scraping import *
+from utils import *
+
+
 #===========================================================================================
 # Functions
 #===========================================================================================

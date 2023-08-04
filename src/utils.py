@@ -5,9 +5,11 @@ import os
 import requests
 from bs4 import BeautifulSoup
 from googlesearch import search
+from inspect import getsourcefile
 
 # Global variables
-CWD = os.getcwd()
+CWD=os.path.dirname(getsourcefile(lambda:0))
+
 TEST_DIR = os.path.join(CWD, "..", "test", "music")
 ROCK_DIR = os.path.join(TEST_DIR, "Rock")
 TEST_DATA_DIR = os.path.join(TEST_DIR, "TestData")

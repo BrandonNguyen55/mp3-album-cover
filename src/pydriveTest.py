@@ -1,8 +1,10 @@
 #!/usr/bin/env python
+import os
+
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
+
 import utils as utils
-import os
 
 # Below code does the authentication
 # part of the code
