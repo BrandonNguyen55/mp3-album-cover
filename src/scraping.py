@@ -40,7 +40,6 @@ class Wikipedia(Website):
     def __init__(self, html):
         super().__init__(html)
         self.domain = "https://en.wikipedia.org/"
-        self.table_vevant = self.html_soup.find("table", class_="infobox vevent")
 
     def get_artist(self):
         song_by_artist_tag = self.table_vevant.find("th", class_="infobox-header description")        
@@ -65,39 +64,40 @@ class Wikipedia(Website):
 
 class Spotify(Website):
     def __init__(self, html):
-        print("Spotify")
         super().__init__(html)
         self.domain = "https://open.spotify.com/"
 
+
+    """ Get the Artist Name """
     def get_artist(self):
-        print("Getting Artist")
-        artist_tag = self.html_soup.find("a", href=re.compile("/artist")) 
+        class_name = "Type__TypeElement-sc-goli3j-0 ieTwfQ b81TNrTkVyPCOH0aDdLG"
+        artist_div = self.html_soup.find("div", class_= class_name)
+
+        artist_tag = artist_div.find("a")
         return artist_tag.text.strip()
 
+
+    """ Get the Song Title """
     def get_song_title(self):
-        song_tag = self.html_soup.find("h1", class_="Type__TypeElement-sc-goli3j-0 ilmalU gj6rSoF7K4FohS2DJDEm")
+        class_name = "Type__TypeElement-sc-goli3j-0 gyivyS gj6rSoF7K4FohS2DJDEm"
+        song_tag = self.html_soup.find("h1", class_=class_name)
         return song_tag.text.strip()
 
+
+    """ Get the Album Name """
     def get_album(self):
-        album_info_tag = self.html_soup.find("a", href=re.compile("/album"))
-        album_tag = album_info_tag.find("span")
+        class_name = "z0LHX2yZ2wBi7LCow2r6"
+        album_div = self.html_soup.find("div", class_=class_name)
+        
+        class_name = "Type__TypeElement-sc-goli3j-0 ieTwfQ"
+        album_tag = self.html_soup.find("span", class_=class_name)
         return album_tag.text.strip()
 
+
+    """ Get the Album Art URL """
     def get_album_art_url(self):
+        class_name = "Type__TypeElement-sc-goli3j-0 ieTwfQ b81TNrTkVyPCOH0aDdLG"
         jpg_tag = self.html_soup.find("meta", property="og:image")
         if jpg_tag:
             return jpg_tag["content"]        
         return None    
-
-if __name__ == "__main__":
-    # Testing Code
-    url = "https://open.spotify.com/track/0hjOQVfGYP2NXINPOp4EgI" 
-    # Make an instance of the Website to scrape     
-    html_text, status = get_website_html(url)
-    
-    a = Spotify(html_text)
-    z = a.html_soup
-    b = a.get_song_title()
-    c = a.get_artist()
-    d = a.get_album()
-    print(f"{c} - {b} ({d})")
