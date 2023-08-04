@@ -10,7 +10,9 @@ from inspect import getsourcefile
 # Global variables
 CWD=os.path.dirname(getsourcefile(lambda:0))
 
-TEST_DIR = os.path.join(CWD, "..", "test", "music")
+PROJECT_DIR = os.path.join(CWD, "..")
+TEST_DIR = os.path.join(PROJECT_DIR, "test", "music")
+TEMP_DIR = os.path.join(PROJECT_DIR, "temp")
 ROCK_DIR = os.path.join(TEST_DIR, "Rock")
 TEST_DATA_DIR = os.path.join(TEST_DIR, "TestData")
 
@@ -48,7 +50,7 @@ def save_html(filename, html):
     @param filename - The name of the html file
     @param html - The HTML 
     """
-    with open(os.path.join(CWD, 'temp', f'{filename}.html'), 'w', encoding = 'utf-8') as f:
+    with open(os.path.join(TEMP_DIR, f'{filename}.html'), 'w', encoding = 'utf-8') as f:
         f.write(str(html))
 
 
@@ -58,7 +60,7 @@ def save_jpg(url, filename):
    
     @param url - The url link
     """
-    with open(os.path.join(CWD, 'temp', f'{filename}.jpg'), 'wb') as f:
+    with open(os.path.join(TEMP_DIR, f'{filename}.jpg'), 'wb') as f:
         response = requests.get(url, stream=True)
 
         if not response.ok:
