@@ -4,3 +4,5 @@
 __pycache__/
 temp/
 test/music/
+src/client_secrets.json
+src/.google-cookie
