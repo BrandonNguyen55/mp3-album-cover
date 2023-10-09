@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # Library Imports
 import os
-import pathlib
 import string
 import urllib.request
 
@@ -16,27 +15,6 @@ from utils import *
 #===========================================================================================
 # Functions
 #===========================================================================================
-def split_filename(filename:string):
-    """ 
-    Split the filename into artist and song name.
-            
-    @param filename - the filename of the mp3 file
-    @return - a tuple of strings for the artist and song name
-    """ 
-    # If filename doesn't have the "{artist} - {song}" format return early
-    if filename.count('-') != 1:
-        return None, None 
-
-    # Stem off the file extension
-    filename = pathlib.Path(filename).stem
-
-    # Split the file into artist and song
-    artist_name, song_name = filename.split('-')
-    artist_name = artist_name.strip()
-    song_name = song_name.strip()
-    return artist_name, song_name 
-
-
 def print_audio_metadata(audio:eyed3.AudioFile)-> None:
     """ 
     Prints the Audio Metadata given an AudioFile.

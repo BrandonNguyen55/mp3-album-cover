@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 from googlesearch import search
 from inspect import getsourcefile
+import pathlib as pathlib
 
 # Global variables
 CWD=os.path.dirname(getsourcefile(lambda:0))
@@ -19,6 +20,26 @@ TEST_DATA_DIR = os.path.join(TEST_DIR, "TestData")
 #===========================================================================================
 # Functions
 #===========================================================================================
+def split_filename(filename:string):
+    """ 
+    Split the filename into artist and song name.
+            
+    @param filename - the filename of the mp3 file
+    @return - a tuple of strings for the artist and song name
+    """ 
+    # If filename doesn't have the "{artist} - {song}" format return early
+    if filename.count('-') != 1:
+        return None, None 
+
+    # Stem off the file extension
+    filename = pathlib.Path(filename).stem
+
+    # Split the file into artist and song
+    artist_name, song_name = filename.split('-')
+    artist_name = artist_name.strip()
+    song_name = song_name.strip()
+    return artist_name, song_name
+
 def get_website_html(url):
     """ 
     Get the Website HTML From the url.
