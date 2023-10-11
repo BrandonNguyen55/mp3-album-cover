@@ -70,8 +70,15 @@ def process_file(audio_filename):
 
     # Search on Google
     search_query = google(f"Spotify {name1} {name2} song")
-    # TODO: Pick wikipedia site
-    url = search_query[0]
+
+    # Check if the link has track
+    flag = 0
+    for url in search_query:
+        if "track" in url:
+            flag = 1
+            break
+    if not flag:
+        raise ValueError('Not a Valid Spotify URL')
 
     # Make an instance of the Website to scrape     
     html_text, status = get_website_html(url)
