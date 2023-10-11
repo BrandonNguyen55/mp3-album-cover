@@ -88,7 +88,7 @@ def process_file(audio_filename):
     audio_file = eyed3.load(os.path.join(TEST_DATA_DIR, audio_filename))
     audio_file.initTag(version=(2, 3, 0))  
 
-
+    # Edit Audio File
     edit_audio(audio_file, website.get_artist(), website.get_song_title(), website.get_album())
     add_album_art(audio_file, website.get_album_art_url())
 
