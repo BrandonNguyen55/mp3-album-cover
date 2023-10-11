@@ -29,7 +29,7 @@ def split_filename(filename:string):
     """ 
     # If filename doesn't have the "{artist} - {song}" format return early
     if filename.count('-') != 1:
-        return None, None 
+        return None, filename  
 
     # Stem off the file extension
     filename = pathlib.Path(filename).stem
